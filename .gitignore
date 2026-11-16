@@ -1,0 +1,11 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+# Artefak pengujian (xlsx dan models/*.joblib SENGAJA tidak diabaikan)
+.check_tmp/
+screenshots/
+.pytest_cache/
+.DS_Store

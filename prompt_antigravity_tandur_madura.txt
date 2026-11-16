@@ -1,0 +1,464 @@
+================================================================================
+PROMPT GOOGLE ANTIGRAVITY - TANDUR (Smart Crop Recommendation System for Madura Island)
+================================================================================
+CARA PAKAI:
+1. Buat folder proyek kosong, mis. "tandur-madura".
+2. Letakkan file data_rekomendasi_tanaman_madura.xlsx di folder itu (root).
+3. Buka folder itu di Antigravity (File > Open Folder), pilih mode Agent/Planning.
+4. Salin SEMUA teks di bawah garis "MULAI PROMPT" sampai "SELESAI PROMPT", tempel ke agent.
+================================================================================
+================================ MULAI PROMPT ==================================
+================================================================================
+
+PERAN
+Kamu adalah senior full-stack data engineer dan UI/UX developer (Python, Streamlit,
+scikit-learn). Kerjakan SEKALI JALAN sampai selesai tanpa bertanya balik. Jika ada
+keputusan kecil yang belum saya tentukan, ambil pilihan terbaik yang paling profesional
+lalu catat di README.md. Jangan berhenti sebelum semua langkah (termasuk LANGKAH 9:
+pemeriksaan menyeluruh) selesai dan lulus.
+
+--------------------------------------------------------------------------------
+1. RINGKASAN PROYEK
+--------------------------------------------------------------------------------
+Bangun web app Streamlit profesional bernama:
+
+  NAMA APLIKASI : TANDUR
+  SINGKATAN DARI: Teknologi Analisis dan Rekomendasi untuk Dunia Usaha Pertanian Madura
+  JUDUL INGGRIS : SMART CROP RECOMMENDATION SYSTEM FOR MADURA ISLAND
+  SUBJUDUL      : Sistem Pendukung Keputusan Rekomendasi Tanaman Berbasis K-Nearest Neighbors (KNN)
+  PEMBUAT       : Fajar Setya Adhi - 20251233022
+  INSTANSI      : Sistem Informasi, Fakultas Teknik, Universitas Islam Madura 2026
+
+IDENTITAS MEREK (BRANDING) - berlaku di SELURUH aplikasi:
+  - "TANDUR" adalah nama utama aplikasi (kata "tandur" berarti menanam). Tampilkan dalam huruf
+    besar, font Poppins tebal, sebagai judul terbesar di banner, dengan warna primary tema.
+    Jangan memaksakan penyorotan huruf akronim; cukup tampilkan kepanjangan sebagai tagline.
+  - Susunan teks banner (atas ke bawah):
+      1) TANDUR (judul besar)
+      2) Teknologi Analisis dan Rekomendasi untuk Dunia Usaha Pertanian Madura (tagline)
+      3) SMART CROP RECOMMENDATION SYSTEM FOR MADURA ISLAND (judul Inggris, huruf kapital kecil/letter-spacing)
+      4) Sistem Pendukung Keputusan Rekomendasi Tanaman Berbasis K-Nearest Neighbors (KNN) (subjudul metode)
+      5) chip identitas pembuat
+  - Di sidebar (bagian atas) tampilkan logo teks kecil "TANDUR" + tagline singkat "Rekomendasi Tanaman Madura".
+  - Favicon / page_icon: emoji 🌱.
+  - Nama "Smart Crop Madura" yang lama TIDAK boleh muncul lagi sebagai nama aplikasi; gunakan
+    "TANDUR" di semua teks antarmuka, README, laporan pemeriksaan, dan panduan deploy.
+
+Metode WAJIB: K-Nearest Neighbors (scikit-learn KNeighborsClassifier). Jangan ganti metode.
+Bahasa antarmuka: Bahasa Indonesia.
+
+Identitas pembuat (nama, NIM, prodi, fakultas, universitas, tahun) HARUS tampil di:
+  a. banner/header halaman utama (chip kecil di bawah judul),
+  b. bagian bawah sidebar,
+  c. footer semua halaman: "© 2026 Fajar Setya Adhi - 20251233022 | Sistem Informasi, Fakultas Teknik, Universitas Islam Madura",
+  d. halaman "Tentang & Panduan",
+  e. README.md,
+  f. page_title browser: "TANDUR - Smart Crop Recommendation System for Madura Island | Fajar Setya Adhi".
+
+Referensi gaya: aplikasi KNN irigasi bergaya dashboard (banner hijau, sidebar "panel sensor"
+dengan tombol skenario cepat + slider, navigasi tab horizontal, tab "Bedah Perhitungan Manual",
+tab "Evaluasi & Optimasi K", tab "Manajemen Dataset", maskot kecil, tooltip bantuan "?").
+Terapkan KONSEP serupa, tetapi seluruh desain, maskot, teks, dan kode HARUS orisinal
+buatanmu sendiri (jangan menyalin).
+
+--------------------------------------------------------------------------------
+2. DATA (WAJIB DIPAKAI APA ADANYA)
+--------------------------------------------------------------------------------
+File : data_rekomendasi_tanaman_madura.xlsx (di root proyek), sheet pertama bernama "data tanaman".
+Sheet kedua "Keterangan" hanya penjelasan, abaikan saat training.
+Kolom (urutan tetap):
+  kabupaten     : Bangkalan | Sampang | Pamekasan | Sumenep        (kategorikal)
+  musim         : Hujan | Kemarau                                    (kategorikal)
+  jenis_tanah   : kapur | aluvial | regosol | grumusol               (kategorikal)
+  suhu          : derajat C, 20-36                                   (numerik)
+  kelembapan    : %, 45-95                                           (numerik)
+  curah_hujan   : mm/bulan, 10-350                                   (numerik)
+  ph_tanah      : 4.5-8.0                                            (numerik)
+  ketinggian    : mdpl, 1-350                                        (numerik)
+  tanaman       : TARGET. jagung | tembakau | kacang tanah | cabai rawit | singkong | padi gogo
+Sekitar 2.160 baris, tanpa duplikat, tanpa nilai kosong, kelas relatif seimbang.
+JANGAN membuat ulang / mengganti data ini. Jika file tidak ditemukan, app harus menampilkan
+pesan ramah + uploader untuk mengunggah file, bukan crash.
+CATATAN KEJUJURAN: data bersifat SIMULASI (sintetis). Tampilkan catatan ini di halaman
+Manajemen Dataset dan Tentang & Panduan.
+
+--------------------------------------------------------------------------------
+3. STRUKTUR FILE YANG HARUS DIHASILKAN
+--------------------------------------------------------------------------------
+tandur-madura/
+  app.py                               aplikasi utama (boleh dipecah ke modul bila rapi: core/, ui/)
+  train_model.py                       melatih KNN & menyimpan file .joblib
+  check_all.py                         skrip pemeriksaan otomatis (lihat LANGKAH 9)
+  requirements.txt
+  README.md                            deskripsi TANDUR (+kepanjangan), cara menjalankan, struktur, catatan
+  PANDUAN_DEPLOY.md                    panduan GitHub + Streamlit Cloud (isi: BAGIAN 12)
+  LAPORAN_PEMERIKSAAN.md               hasil pemeriksaan (dibuat di LANGKAH 9)
+  .gitignore                           (jangan mengabaikan .xlsx dan models/*.joblib)
+  .streamlit/config.toml
+  data_rekomendasi_tanaman_madura.xlsx (sudah ada, jangan ditimpa)
+  models/knn_crop_madura.joblib        hasil training (HARUS benar-benar dibuat & diverifikasi)
+
+requirements.txt (gunakan rentang versi, bukan pin ketat):
+  streamlit>=1.40,<2
+  pandas>=2.1
+  numpy>=1.26
+  scikit-learn>=1.4,<2
+  joblib>=1.3
+  openpyxl>=3.1
+  plotly>=5.22
+
+.streamlit/config.toml:
+  [server] headless = true
+  [browser] gatherUsageStats = false
+  [theme] base = "light"   (tema sebenarnya dikendalikan CSS kustom)
+
+Tidak perlu runtime.txt. Kode harus kompatibel dengan Python 3.10-3.12.
+Cek versi Streamlit terpasang; bila ada API yang deprecated (mis. use_container_width vs
+width="stretch"), buat helper kecil agar kode berjalan di kedua versi tanpa warning/error.
+
+--------------------------------------------------------------------------------
+4. MODEL KNN & FILE .joblib
+--------------------------------------------------------------------------------
+train_model.py (bisa dijalankan mandiri: python train_model.py) dan juga diimpor app.py:
+  - Baca xlsx, validasi kolom/tipe, buang baris kosong/duplikat.
+  - Pipeline scikit-learn:
+      ColumnTransformer(
+        [("cat", OneHotEncoder(handle_unknown="ignore", sparse_output=False), [kabupaten, musim, jenis_tanah]),
+         ("num", StandardScaler(), [suhu, kelembapan, curah_hujan, ph_tanah, ketinggian])])
+      -> KNeighborsClassifier(n_neighbors=K, metric=..., weights=...)
+  - Split stratified 80/20, random_state=42.
+  - Cari K terbaik dengan 5-fold StratifiedKFold CV pada K = 1..25, metrik {euclidean, manhattan},
+    weights {uniform, distance}. Pilih kombinasi terbaik (akurasi CV tertinggi; seri -> K lebih kecil).
+  - Latih ulang pada data latih, hitung akurasi/precision/recall/F1 (data uji), simpan ke:
+      models/knn_crop_madura.joblib  berisi dict:
+        {"pipeline": <Pipeline>, "k": int, "metric": str, "weights": str,
+         "classes": list, "feature_names": {...}, "metrics": {...},
+         "n_train": int, "n_test": int, "trained_at": ISO-datetime,
+         "sklearn_version": str, "data_file": str}
+  - Cetak ringkasan hasil di terminal.
+app.py:
+  - Muat joblib dengan st.cache_resource. Jika file belum ada, ATAU gagal dimuat
+    (mis. beda versi scikit-learn di server), otomatis latih ulang & simpan, lalu lanjut
+    tanpa crash (tampilkan notifikasi kecil "Model dilatih ulang otomatis").
+  - Tombol "Latih Ulang & Simpan Model (.joblib)" dan "Unduh model .joblib" (st.download_button)
+    di halaman Evaluasi & Optimasi K. Setelah latih ulang: kosongkan cache dan rerun.
+  - Tampilkan info model aktif (K, metrik, weights, akurasi, tanggal latih, versi sklearn).
+
+--------------------------------------------------------------------------------
+5. NAVIGASI, LAYOUT, FITUR PER HALAMAN
+--------------------------------------------------------------------------------
+JANGAN memakai st.tabs (tidak memicu rerun sehingga loading tidak bisa muncul).
+Gunakan navigasi horizontal berbasis st.radio(horizontal=True) / st.segmented_control yang
+di-style menjadi "pill" neumorphism, ditaruh di bawah banner. Di mobile, navigasi harus bisa
+digeser horizontal (overflow-x: auto) tanpa memecah layout.
+Setiap pergantian halaman, pergantian tema/mode, dan aksi berat (latih model, evaluasi,
+unggah data) WAJIB menampilkan LOADING (lihat bagian 8).
+
+Halaman (urutan tetap):
+  1. "🎛️ Dashboard & Rekomendasi"
+  2. "📊 Visualisasi 3D & 2D"
+  3. "🧮 Bedah Perhitungan Manual"
+  4. "📈 Evaluasi & Optimasi K"
+  5. "📁 Manajemen Dataset"
+  6. "🌾 Profil Tanaman Madura"      (PENGGANTI tab IoT; tidak ada fitur IoT sama sekali)
+  7. "ℹ️ Tentang & Panduan"
+
+HEADER/BANNER (semua halaman): kartu besar neumorphism berisi judul, subjudul, chip identitas
+pembuat, maskot SVG orisinal "Si Odheng" (tanaman kecil bertopi odheng/ikat kepala batik Madura,
+digambar dengan SVG inline, beranimasi goyang halus, ekspresi berubah mengikuti keyakinan
+prediksi: >=75% senang, 50-75% netral, <50% bingung), dan JAM DIGITAL (bagian 9).
+
+SIDEBAR "🌿 Panel Kondisi Lahan":
+  - Skenario cepat (tombol, pakai on_click callback agar tidak menimbulkan
+    StreamlitAPIException saat mengubah session_state widget). Nilai pasti:
+      🌾 Kapur Kering Sumenep   : Sumenep,  Kemarau, kapur,    suhu 29.0, kelembapan 66, CH 75,  pH 6.5, tinggi 40
+      🚜 Ladang Tembakau Pamekasan: Pamekasan, Kemarau, regosol,  suhu 30.0, kelembapan 62, CH 60,  pH 6.0, tinggi 35
+      🌧️ Musim Hujan Sampang    : Sampang,  Hujan,   aluvial,  suhu 26.5, kelembapan 84, CH 210, pH 5.8, tinggi 15
+      🌶️ Lahan Subur Bangkalan  : Bangkalan,Hujan,   aluvial,  suhu 25.8, kelembapan 79, CH 155, pH 6.1, tinggi 110
+      🌽 Ladang Jagung Sampang  : Sampang,  Hujan,   grumusol, suhu 28.0, kelembapan 71, CH 115, pH 6.4, tinggi 50
+      🎲 Acak (nilai acak dalam rentang data)  dan  ↺ Reset
+  - Input: selectbox kabupaten, musim, jenis_tanah; slider suhu (20-36, step 0.1),
+    kelembapan (45-95), curah hujan (10-350), pH (4.5-8.0, step 0.1), ketinggian (1-350).
+    Semua input punya tooltip (parameter help=) yang menjelaskan arti & satuannya.
+  - Blok "🎨 Tampilan": switch Mode Siang/Malam dan pilihan 25 tema (bagian 7).
+  - Di bawah sidebar: identitas pembuat.
+
+HALAMAN 1 - Dashboard & Rekomendasi:
+  - Kartu hasil besar: emoji tanaman + nama tanaman rekomendasi + tingkat keyakinan (%).
+  - Peringkat 3 teratas (bar neumorphism/progress) dari predict_proba.
+  - Ringkasan "mengapa": komposisi K tetangga terdekat (mis. 4 dari 5 tetangga = tembakau).
+  - "Kecocokan lahan": untuk tiap fitur numerik, bandingkan input dengan rentang P10-P90 data
+    tanaman terpilih -> lencana "Sesuai" / "Di bawah" / "Di atas" + saran singkat.
+  - Saran budidaya singkat untuk tanaman terpilih (teks informatif, bernada hati-hati).
+  - Peringatan bila keyakinan < 50% atau input di luar rentang data latih.
+  - Riwayat rekomendasi (maks 50, session_state): tabel + tombol Unduh CSV + Hapus riwayat.
+  - Disclaimer: hasil adalah saran pendukung keputusan, bukan keputusan akhir.
+HALAMAN 2 - Visualisasi 3D & 2D (Plotly, transparan mengikuti tema):
+  - Scatter 3D: pilih 3 fitur numerik sebagai sumbu; titik data diwarnai per tanaman;
+    titik input pengguna ditandai khusus (bintang/berlian besar); opsional tampilkan garis ke K tetangga.
+  - Scatter 2D (pilih sumbu X/Y), histogram/box per fitur per tanaman, heatmap korelasi
+    fitur numerik, bar distribusi kelas, bar tanaman per kabupaten & per musim.
+  - Radar chart: profil input pengguna vs rata-rata tanaman terpilih (nilai dinormalisasi 0-1).
+  - Filter: kabupaten, musim, jenis tanah.
+HALAMAN 3 - Bedah Perhitungan Manual (transparan, bisa diverifikasi):
+  Langkah 1: tampilkan input mentah.
+  Langkah 2: normalisasi - tabel fitur numerik dengan mean (μ), std (σ) dari scaler, nilai z
+             dengan rumus st.latex  z = (x − μ) / σ  dan angka nyata; tampilkan one-hot kategorikal.
+  Langkah 3: hitung jarak ke SEMUA data latih secara manual dengan numpy
+             (euclidean: d = sqrt(Σ (a_i − b_i)²), atau manhattan sesuai model aktif),
+             tampilkan tabel K tetangga terdekat: peringkat, tanaman, jarak, dan kontribusi
+             selisih kuadrat per fitur.
+  Langkah 4: pemungutan suara - uniform (hitung) atau distance (bobot 1/d); tabel suara per kelas.
+  Langkah 5: hasil akhir + PEMBUKTIAN: bandingkan indeks & jarak hasil manual dengan
+             pipeline.named_steps["knn"].kneighbors; tampilkan "✅ Cocok" bila identik.
+HALAMAN 4 - Evaluasi & Optimasi K:
+  - Parameter: rasio data uji (10-40%), rentang K (1-30), metrik, weights, jumlah fold CV (3-10).
+  - Tombol "Jalankan Evaluasi" (dengan loading): grafik K vs akurasi (latih & CV), K terbaik,
+    akurasi, precision/recall/F1 (macro), classification report (tabel), confusion matrix (heatmap),
+    tabel grid search (K x metrik x weights) berperingkat.
+  - Tombol "Terapkan K terbaik & simpan model" -> menulis ulang .joblib & memuat ulang model aktif.
+  - Tombol "Unduh model .joblib". Info model aktif.
+HALAMAN 5 - Manajemen Dataset:
+  - Ringkasan: jumlah baris/kolom, cek kosong, duplikat, rentang tiap fitur, distribusi kelas.
+  - Tabel data dengan pencarian, filter (kabupaten/musim/tanah/tanaman), urutan kolom,
+    paginasi (50 baris/halaman).
+  - Tambah satu data baru lewat form (validasi rentang & kategori), simpan ke xlsx
+    (tulis ulang sheet "data tanaman" tanpa merusak sheet "Keterangan"), lalu opsi latih ulang.
+  - Unggah xlsx/csv pengganti dengan validasi skema ketat (kolom, tipe, kategori, rentang);
+    bila tidak valid tampilkan daftar kesalahan, JANGAN menimpa data lama.
+  - Unduh data (xlsx & csv). Tombol "Kembalikan data asli" bila ada cadangan.
+  - Catatan: di Streamlit Cloud perubahan file tidak permanen setelah app reboot; jelaskan ini.
+  - Catatan: data simulasi.
+HALAMAN 6 - Profil Tanaman Madura (informatif, bagian pengganti IoT):
+  - Pilih tanaman (selectbox atau kartu-kartu), tampilkan kartu profil: emoji, deskripsi singkat,
+    potensi di Madura, syarat tumbuh ideal berdasarkan data (rata-rata + rentang P10-P90 tiap fitur),
+    tabel kebutuhan, tips budidaya & catatan musim tanam (umum, akurat, bernada hati-hati),
+    distribusi per kabupaten, per musim, per jenis tanah (bar chart).
+  - Peta sebaran: plotly scatter_mapbox/scatter_map dengan style "carto-positron" (tanpa token),
+    4 titik ibu kota kabupaten: Bangkalan (-7.0451, 112.7345), Sampang (-7.1883, 113.2492),
+    Pamekasan (-7.1568, 113.4825), Sumenep (-7.0167, 113.8667); ukuran bubble = jumlah data
+    tanaman terpilih di kabupaten itu.
+  - Tabel perbandingan semua tanaman (rata-rata fitur) + radar perbandingan 2 tanaman.
+  - Fakta khas Madura singkat (lahan kering & tanah kapur, tembakau Pamekasan/Sumenep/Sampang,
+    jagung sebagai tanaman pangan utama, dsb) tanpa angka statistik yang tidak bisa kamu pastikan.
+HALAMAN 7 - Tentang & Panduan:
+  - Profil pembuat (Fajar Setya Adhi - 20251233022, Sistem Informasi, Fakultas Teknik,
+    Universitas Islam Madura 2026), tujuan sistem, alur kerja KNN, penjelasan rumus jarak,
+    penjelasan normalisasi & one-hot, cara membaca hasil, keterbatasan (data simulasi, hanya
+    kecocokan agronomi, belum memuat harga pasar/ketersediaan air irigasi), panduan penggunaan
+    langkah demi langkah, glosarium, FAQ, versi app & library (versi sklearn/streamlit terpasang).
+
+--------------------------------------------------------------------------------
+6. GAYA VISUAL: NEUMORPHISM LEMBUT + TIGA DIMENSI
+--------------------------------------------------------------------------------
+Semua komponen harus tampak "timbul/tenggelam" lembut:
+  - Kartu/panel: border-radius 22-28px, background = var(--bg), box-shadow ganda
+      (bayangan gelap di kanan-bawah + bayangan terang di kiri-atas), mis.
+      box-shadow: 9px 9px 18px var(--sh-dark), -9px -9px 18px var(--sh-light);
+    plus gradien halus linear-gradient(145deg, var(--bg-hi), var(--bg-lo)) untuk kesan 3D.
+  - Elemen input (selectbox, slider track, text input, number input): efek inset
+      (inset 5px 5px 10px var(--sh-dark), inset -5px -5px 10px var(--sh-light)).
+  - Tombol: timbul; hover naik sedikit (translateY(-2px) + bayangan lebih besar);
+    active/pressed menjadi inset; transisi 200ms; fokus keyboard terlihat jelas (a11y).
+  - Pill navigasi aktif = inset + warna aksen tema; non-aktif = timbul.
+  - Kartu hasil rekomendasi, banner, dan maskot diberi lapisan kedalaman (multi-layer shadow,
+    sedikit perspektif/rotasi pada hover dengan transform: perspective()).
+  - Warna lembut (pastel/muted), kontras teks tetap memenuhi WCAG AA.
+  - Font: Google Fonts "Poppins" (judul) dan "Inter" (isi) via @import; fallback sans-serif.
+  - Streamlit memakai portal untuk dropdown (div[data-baseweb="popover"], ul[role="listbox"]),
+    expander, tooltip, toast, alert: style semuanya agar ikut tema siang/malam (jangan ada
+    kotak putih/hitam bawaan yang "bocor").
+  - Sembunyikan footer "Made with Streamlit" dan latar header putih bawaan (buat transparan);
+    toolbar/menu deploy boleh tetap ada tapi tidak merusak tema.
+  - Tabel: JANGAN pakai st.dataframe/st.data_editor untuk tampilan utama (canvas-nya tidak bisa
+    mengikuti tema CSS). Buat helper render_table(df, page_size=50) yang membuat tabel HTML
+    ber-CSS (neumorphism, header sticky, zebra halus, scroll horizontal di mobile) + paginasi.
+  - Plotly: paper_bgcolor/plot_bgcolor transparan, warna font & grid dari variabel tema,
+    warna tiap tanaman tetap konsisten:
+      jagung #E0A800, tembakau #8B5E3C, kacang tanah #C98F5E,
+      cabai rawit #D63031, singkong #7C8B6F, padi gogo #5FA052
+    (cukup kontras di mode siang & malam).
+
+--------------------------------------------------------------------------------
+7. TEMA (25 PILIHAN) + SWITCH SIANG/MALAM
+--------------------------------------------------------------------------------
+Dua kontrol independen, tersimpan di st.session_state dan juga ditulis ke st.query_params
+(?theme=...&mode=...) agar bertahan saat halaman di-refresh:
+  (a) Switch "☀️ Siang / 🌙 Malam" (st.toggle).
+  (b) Selectbox 25 tema + pratinjau 3 kotak warna (primary/secondary/accent) di sebelahnya.
+TEMA DEFAULT = "Sakera Madura" (khas Madura: merah-putih pesa'an/sakera, krem garam, emas
+kunyit, cokelat arang). Mode default = siang.
+
+Daftar 25 tema (nama | primary | secondary | accent-tua). Semua warna dibuat LEMBUT:
+   1. Sakera Madura (default)  | #B5403A | #D9A441 | #3E2A24
+   2. Kerapan Sapi             | #C0392B | #F4D03F | #2C3E50
+   3. Tembakau Pamekasan       | #8B5E3C | #C9A66B | #4E342E
+   4. Garam Sumenep            | #5DADE2 | #ECF0F1 | #34495E
+   5. Batik Tanean Lanjhang    | #A93226 | #1B4F72 | #D4AC0D
+   6. Pantai Lombang           | #2E86AB | #F6C85F | #6F4E37
+   7. Api Tak Kunjung Padam    | #E67E22 | #C0392B | #2C2C2C
+   8. Bukit Jaddih             | #A1887F | #D7CCC8 | #5D4037
+   9. Jagung Emas              | #E0A800 | #7A9A3B | #5B4B1E
+  10. Padi Gogo                | #7FA650 | #C5D86D | #3C5A2A
+  11. Cabai Rawit              | #D63031 | #FF7675 | #2D3436
+  12. Kacang Tanah             | #B98B5E | #E8C9A0 | #6D4C41
+  13. Singkong                 | #A0856C | #E6D5C3 | #5D4E3E
+  14. Laut Madura              | #1F7A8C | #BFDBF7 | #022B3A
+  15. Suramadu                 | #3D5A80 | #98C1D9 | #EE6C4D
+  16. Keraton Sumenep          | #7B5EA7 | #D4AF37 | #3B2A50
+  17. Hutan Mangrove           | #2D6A4F | #95D5B2 | #1B4332
+  18. Senja Pesisir            | #F4845F | #F7B267 | #5C374C
+  19. Zamrud                   | #00A878 | #A8E6CF | #064E3B
+  20. Lavender Lembut          | #9B8FC7 | #D7CFF0 | #4A4063
+  21. Rose Pastel              | #E58F9E | #F8D7DC | #6B3A45
+  22. Mint Segar               | #6CC5B0 | #D5F2EB | #2F5D54
+  23. Ocean Blue              | #4A90E2 | #BBD8F7 | #1F3A5F
+  24. Slate Minimal            | #6C7A89 | #D0D6DC | #2C3A47
+  25. Midnight Indigo          | #4B4E9E | #A9ABE0 | #1E2050
+
+Turunan warna (implementasikan helper dengan colorsys/HLS, mix, lighten, darken):
+  MODE SIANG:
+    --bg       = campur(secondary, putih, 88-90%) lalu turunkan saturasi (L ~ 92-95%)
+    --bg-hi    = lighten(--bg, 3%);  --bg-lo = darken(--bg, 3%)
+    --sh-light = putih alpha 0.90;   --sh-dark = darken(--bg, 14%) alpha 0.75
+    --text     = accent-tua;  --muted = campur(--text, --bg, 45%)
+    --primary  = primary;     --on-primary = putih/hitam otomatis sesuai kontras
+  MODE MALAM:
+    --bg       = campur(accent-tua, hitam, 55%) (L ~ 12-17%)
+    --bg-hi    = lighten(--bg, 3%);  --bg-lo = darken(--bg, 3%)
+    --sh-light = lighten(--bg, 7%) alpha 0.55;  --sh-dark = hitam alpha 0.55
+    --text     = campur(secondary, putih, 85%);  --muted = turunan 55%
+    --primary  = lighten(primary, 12%)
+Pastikan semua teks lolos kontras minimum 4.5:1 terhadap latar (buat fungsi cek kontras;
+bila kurang, sesuaikan otomatis). Perubahan tema/mode harus mengubah SELURUH UI termasuk
+grafik, tabel, jam, maskot, dan elemen portal Streamlit.
+
+--------------------------------------------------------------------------------
+8. LOADING SAAT PERGANTIAN MENU / TAB / TEMA / AKSI BERAT
+--------------------------------------------------------------------------------
+Buat helper show_loading(label) yang menampilkan overlay penuh-layar semi-transparan
+bernuansa neumorphism: spinner/animasi tanaman tumbuh + teks "Memuat <nama halaman>..."
+(placeholder = st.empty(), tampil minimal ~0.5 detik lalu dikosongkan). Panggil saat:
+  - halaman navigasi berubah (bandingkan dengan st.session_state["last_page"]),
+  - tema atau mode siang/malam berubah,
+  - aksi berat: latih model, jalankan evaluasi/grid search, unggah/validasi data, simpan data.
+Tambahkan juga st.spinner pada komputasi yang lama. Overlay tidak boleh membuat tombol macet
+atau meninggalkan layar terkunci (selalu dikosongkan, termasuk saat terjadi error: pakai try/finally).
+
+--------------------------------------------------------------------------------
+9. JAM & TANGGAL BERJALAN (REAL-TIME)
+--------------------------------------------------------------------------------
+Tampilkan di header: hari, tanggal, bulan, tahun, jam:menit:detik yang BERDETAK setiap detik
+tanpa me-rerun Streamlit. Gunakan st.components.v1.html berisi JavaScript (setInterval 1000 ms),
+zona waktu Asia/Jakarta (Intl.DateTimeFormat / toLocaleString "id-ID" dengan timeZone:"Asia/Jakarta"),
+format: "Senin, 16 November 2026 • 20:52:13 WIB". Warna/font iframe jam harus mengikuti
+variabel tema aktif (sisipkan nilai warna ke HTML saat render). Tampilan ringkas di mobile.
+
+--------------------------------------------------------------------------------
+10. RESPONSIF (DESKTOP, TABLET, MOBILE)
+--------------------------------------------------------------------------------
+Gunakan CSS media query (min. breakpoint 1024 / 768 / 480):
+  - <=768px: padding konten kecil, banner menjadi 1 kolom (maskot mengecil/pindah ke atas),
+    kolom st.columns menumpuk vertikal, font judul diperkecil (clamp()), tombol minimal 44px
+    (touch target), navigasi pill dapat digeser horizontal, tabel HTML scroll horizontal,
+    tinggi grafik Plotly dikurangi (mis. 320-380px) dan legend di bawah, sidebar default
+    tertutup (initial_sidebar_state="auto") namun tetap bisa dibuka.
+  - Tidak boleh ada scroll horizontal pada halaman (kecuali di dalam tabel/navigasi).
+  - Uji pada lebar 375, 414, 768, 1024, 1440 px.
+
+--------------------------------------------------------------------------------
+11. KUALITAS KODE
+--------------------------------------------------------------------------------
+  - Kode bersih, modular, ada docstring/komentar bahasa Indonesia secukupnya, type hints.
+  - Cache: st.cache_data untuk data, st.cache_resource untuk model; kosongkan cache setelah
+    data/model berubah.
+  - Semua widget punya key unik; state terkelola rapi (nilai default diinisialisasi sekali).
+  - Penanganan error ramah (try/except dengan pesan jelas), tidak ada traceback mentah ke pengguna.
+  - Tidak ada path absolut; gunakan pathlib relatif terhadap file app.py.
+  - Tidak ada API key/rahasia. Jangan menambah dependensi di luar requirements.txt.
+  - Aksesibilitas: label jelas, kontras baik, fokus keyboard terlihat, alt/aria pada SVG maskot.
+  - Performa: hindari komputasi berulang tidak perlu; hitung jarak manual vektorisasi numpy.
+
+--------------------------------------------------------------------------------
+LANGKAH 9 (WAJIB) - PEMERIKSAAN MENYELURUH SETELAH SEMUA SELESAI
+--------------------------------------------------------------------------------
+Setelah semua kode selesai, JANGAN langsung menyatakan selesai. Jalankan dan buktikan:
+  A. Jalankan "python train_model.py" -> pastikan models/knn_crop_madura.joblib terbentuk,
+     lalu muat ulang dengan joblib.load dan lakukan 1 prediksi uji.
+  B. Buat check_all.py yang memeriksa otomatis (cetak tabel PASS/FAIL):
+       1) data ada, kolom lengkap, tanpa kosong/duplikat, 6 kelas;
+       2) joblib terbentuk & bisa dimuat, akurasi di data uji >= 0.70;
+       3) 25 tema lengkap (primary/secondary/accent valid hex) dan kontras teks lolos 4.5:1
+          pada mode siang DAN malam untuk semua tema;
+       4) streamlit.testing.v1.AppTest: jalankan app, untuk SETIAP dari 7 halaman set
+          navigasi lalu run, pastikan tidak ada exception; klik tiap skenario cepat, tombol Acak,
+          Reset, ubah slider/selectbox, toggle siang/malam, ganti beberapa tema; pastikan
+          hasil rekomendasi muncul;
+       5) hasil Bedah Perhitungan Manual cocok dengan kneighbors (indeks & jarak);
+       6) tambah data/unggah data tidak valid ditolak dengan pesan jelas, data valid diterima;
+       7) latih ulang model dari app menghasilkan joblib baru tanpa error.
+  C. Jalankan app sungguhan: "streamlit run app.py --server.headless true" dan buka dengan
+     Playwright/Chromium bila tersedia: ambil screenshot setiap halaman pada 375px dan 1440px
+     di mode siang & malam (minimal tema default + 2 tema lain), cek tidak ada scroll horizontal,
+     tidak ada elemen putih/hitam bawaan yang bocor, jam berdetak, loading muncul saat
+     pindah halaman, tidak ada error di console/terminal. Bila Playwright tidak tersedia,
+     lakukan peninjauan kode CSS/HTML dan jelaskan keterbatasannya di laporan.
+  D. Perbaiki SEMUA masalah yang ditemukan, ulangi A-C sampai seluruh pemeriksaan PASS.
+  E. Tulis LAPORAN_PEMERIKSAAN.md: daftar pemeriksaan, hasil (✅/❌), bug yang ditemukan &
+     diperbaiki, versi library terpasang, dan batasan yang tersisa (jujur, jangan mengklaim
+     sesuatu yang tidak benar-benar kamu jalankan).
+
+--------------------------------------------------------------------------------
+12. ISI PANDUAN_DEPLOY.md (tulis lengkap, bahasa Indonesia, langkah bernomor)
+--------------------------------------------------------------------------------
+A. Menghubungkan ke GitHub (akun: fajar.list88@gmail.com)
+   1. Masuk/daftar di https://github.com dengan email fajar.list88@gmail.com
+      (pastikan email terverifikasi di Settings > Emails).
+   2. Pasang Git (https://git-scm.com) lalu atur identitas:
+        git config --global user.name "Fajar Setya Adhi"
+        git config --global user.email "fajar.list88@gmail.com"
+      Email ini harus sama dengan email di akun GitHub agar commit tercatat sebagai kontribusi Anda.
+   3. Buat repository baru di GitHub: nama "tandur-madura", Public, JANGAN centang
+      "Add README/.gitignore" (repo kosong).
+   4. Di folder proyek, jalankan:
+        git init
+        git add .
+        git commit -m "Initial commit: TANDUR - Smart Crop Recommendation System for Madura Island"
+        git branch -M main
+        git remote add origin https://github.com/<USERNAME_GITHUB>/tandur-madura.git
+        git push -u origin main
+      (ganti <USERNAME_GITHUB> dengan username GitHub Anda).
+   5. Autentikasi saat push: gunakan jendela login GitHub yang muncul (Git Credential Manager),
+      atau Personal Access Token (GitHub > Settings > Developer settings > Personal access
+      tokens > Tokens (classic) > centang "repo") sebagai pengganti password,
+      atau jalankan "gh auth login" bila memakai GitHub CLI.
+   6. Alternatif di Antigravity: buka panel Source Control > Initialize Repository > Commit
+      > "Publish Branch/Publish to GitHub" > login ke akun GitHub di browser.
+   7. Pastikan di GitHub terlihat: app.py, requirements.txt,
+      data_rekomendasi_tanaman_madura.xlsx, models/knn_crop_madura.joblib, folder .streamlit.
+   8. Update berikutnya: git add . ; git commit -m "pesan" ; git push
+B. Menghubungkan ke Streamlit Community Cloud (streamlit.app)
+   1. Buka https://share.streamlit.io lalu "Continue with GitHub" dan login dengan akun GitHub yang sama.
+   2. Authorize Streamlit untuk mengakses repository (boleh pilih hanya repo tandur-madura).
+   3. Klik "Create app" > "Deploy a public app from GitHub".
+   4. Isi: Repository = <USERNAME_GITHUB>/tandur-madura | Branch = main | Main file path = app.py.
+   5. (Opsional) App URL: tandur-madura  -> https://tandur-madura.streamlit.app (atau "tandur" bila tersedia)
+   6. Advanced settings > Python version 3.11 atau 3.12 > Deploy. Tunggu instalasi selesai (beberapa menit).
+   7. Setiap git push ke branch main akan otomatis memperbarui app. Gunakan menu "⋮" > Reboot app
+      bila perlu.
+   8. Masalah umum: (a) ModuleNotFoundError -> periksa requirements.txt; (b) file xlsx tidak
+      ditemukan -> pastikan ikut ter-commit dan nama persis sama (huruf kecil semua);
+      (c) joblib gagal dimuat karena beda versi scikit-learn -> app melatih ulang otomatis;
+      (d) perubahan data lewat app tidak permanen setelah reboot -> ubah file lalu push ke GitHub.
+
+--------------------------------------------------------------------------------
+13. HASIL AKHIR YANG HARUS KAMU LAPORKAN KEPADA SAYA
+--------------------------------------------------------------------------------
+Setelah LANGKAH 9 lulus, tampilkan ringkasan singkat: daftar file yang dibuat, akurasi model &
+K terpilih, hasil check_all.py, cara menjalankan lokal (pip install -r requirements.txt lalu
+streamlit run app.py), dan lokasi PANDUAN_DEPLOY.md. Jangan melaporkan "selesai" jika masih
+ada pemeriksaan yang gagal.
+
+================================================================================
+================================ SELESAI PROMPT ================================
+================================================================================
