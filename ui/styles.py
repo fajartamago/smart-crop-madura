@@ -26,7 +26,7 @@ html, body, .stApp, [data-testid="stAppViewContainer"], [data-testid="stMain"]{
 .stApp *{ scrollbar-color: var(--primary) var(--bg-lo); }
 header[data-testid="stHeader"]{ background:transparent !important; }
 .stAppDeployButton, [data-testid="stAppDeployButton"], div[data-testid="stAppDeployButton"],
-[data-testid="stToolbar"]{ display:none !important; visibility:hidden !important; }
+[data-testid="stMainMenu"]{ display:none !important; visibility:hidden !important; }
 [data-testid="stToolbar"], [data-testid="stDecoration"]{ background:transparent !important; }
 [data-testid="stToolbar"] *{ color:var(--text) !important; }
 footer, [data-testid="stFooter"], .viewerBadge_container__1QSob{ display:none !important; visibility:hidden; }
@@ -46,8 +46,23 @@ pre code{ background:transparent !important; }
 [data-testid="stSidebar"]{ background:var(--bg) !important; box-shadow:6px 0 18px var(--sh-dark); border-right:0; }
 [data-testid="stSidebar"] > div:first-child{ background:var(--bg) !important; }
 [data-testid="stSidebarContent"]{ background:var(--bg) !important; }
-[data-testid="stSidebarCollapseButton"] button, [data-testid="stExpandSidebarButton"]{ background:var(--bg) !important; color:var(--text) !important; }
-[data-testid="stSidebarCollapseButton"] *, [data-testid="stExpandSidebarButton"] *{ color:var(--text) !important; fill:var(--text) !important; }
+/* Tombol toggle sidebar (expand/collapse) neumorphism */
+[data-testid="stSidebarCollapseButton"] button, [data-testid="stExpandSidebarButton"]{
+  background:var(--grad) !important; color:var(--text) !important;
+  border-radius:16px !important; box-shadow:var(--raise-sm) !important; border:0 !important;
+  min-width:44px !important; min-height:44px !important; display:flex !important;
+  align-items:center !important; justify-content:center !important; cursor:pointer !important;
+  transition:all .2s !important;
+}
+[data-testid="stSidebarCollapseButton"] button:hover, [data-testid="stExpandSidebarButton"]:hover{
+  transform:translateY(-2px); box-shadow:6px 6px 14px var(--sh-dark), -6px -6px 14px var(--sh-light) !important;
+}
+[data-testid="stSidebarCollapseButton"] button:active, [data-testid="stExpandSidebarButton"]:active{
+  transform:translateY(0); box-shadow:var(--inset) !important;
+}
+[data-testid="stSidebarCollapseButton"] *, [data-testid="stExpandSidebarButton"] *{
+  color:var(--text) !important; fill:var(--text) !important;
+}
 .tandur-logo{ font-family:'Poppins',sans-serif; font-weight:800; font-size:1.5rem; letter-spacing:.14em; color:var(--primary-text);
   display:flex; align-items:center; gap:8px; margin:0; }
 .tandur-logo small{ display:block; font-family:'Inter'; font-weight:500; letter-spacing:0; font-size:.78rem; color:var(--muted); }
